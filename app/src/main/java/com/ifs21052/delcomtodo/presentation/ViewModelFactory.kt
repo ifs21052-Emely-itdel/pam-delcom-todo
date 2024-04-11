@@ -11,6 +11,7 @@ import com.ifs21052.delcomtodo.presentation.login.LoginViewModel
 import com.ifs21052.delcomtodo.presentation.main.MainViewModel
 import com.ifs21052.delcomtodo.presentation.profile.ProfileViewModel
 import com.ifs21052.delcomtodo.presentation.register.RegisterViewModel
+import com.ifs21052.delcomtodo.presentation.todo.TodoViewModel
 
 class ViewModelFactory(
     private val authRepository: AuthRepository,
@@ -30,11 +31,15 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel
-                    .getInstance(authRepository) as T
+                    .getInstance(authRepository, todoRepository) as T
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel
                     .getInstance(authRepository, userRepository) as T
+            }
+            modelClass.isAssignableFrom(TodoViewModel::class.java) -> {
+                TodoViewModel
+                    .getInstance(todoRepository) as T
             }
             else -> throw IllegalArgumentException(
                 "Unknown ViewModel class: " + modelClass.name

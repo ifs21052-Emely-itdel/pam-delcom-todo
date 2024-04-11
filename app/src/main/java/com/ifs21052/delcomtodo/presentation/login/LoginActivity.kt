@@ -1,5 +1,6 @@
 package com.ifs21052.delcomtodo.presentation.login
 
+import MainActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,7 +12,6 @@ import com.ifs21052.delcomtodo.data.pref.UserModel
 import com.ifs21052.delcomtodo.data.remote.MyResult
 import com.ifs21052.delcomtodo.databinding.ActivityLoginBinding
 import com.ifs21052.delcomtodo.presentation.ViewModelFactory
-import com.ifs21052.delcomtodo.presentation.main.MainActivity
 import com.ifs21052.delcomtodo.presentation.register.RegisterActivity
 import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
