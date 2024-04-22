@@ -18,7 +18,7 @@ data class DelcomTodoEntity(
     @ColumnInfo(name = "is_finished")
     var isFinished: Int,
     @ColumnInfo(name = "cover")
-    var cover: Any,
+    var cover: String?,
     @ColumnInfo(name = "created_at")
     var createdAt: String,
     @ColumnInfo(name = "updated_at")

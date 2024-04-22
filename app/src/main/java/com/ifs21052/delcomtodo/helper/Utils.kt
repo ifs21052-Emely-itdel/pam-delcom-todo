@@ -12,15 +12,14 @@ class Utils {
             val observerWrapper = object : Observer<T> {
                 override fun onChanged(value: T) {
                     observer(value)
-                    if (value is MyResult.Success<*> ||
-                        value is MyResult.Error
-                    ) {
+                    if (value is MyResult.Success<*> || value is MyResult.Error) {
                         removeObserver(this)
                     }
                 }
             }
             observeForever(observerWrapper)
         }
+
         fun entitiesToResponses(entities: List<DelcomTodoEntity>):
                 List<TodosItemResponse> {
             val responses = ArrayList<TodosItemResponse>()
