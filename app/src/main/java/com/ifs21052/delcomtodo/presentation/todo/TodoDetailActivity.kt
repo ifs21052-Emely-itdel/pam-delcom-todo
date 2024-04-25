@@ -16,6 +16,7 @@ import com.ifs21052.delcomtodo.data.remote.response.TodoResponse
 import com.ifs21052.delcomtodo.databinding.ActivityTodoDetailBinding
 import com.ifs21052.delcomtodo.helper.Utils.Companion.observeOnce
 import com.ifs21052.delcomtodo.presentation.ViewModelFactory
+import com.bumptech.glide.Glide
 
 class TodoDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTodoDetailBinding
@@ -23,7 +24,9 @@ class TodoDetailActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private var isFavorite: Boolean = false
+
     private var delcomTodo: DelcomTodoEntity? = null
+
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -35,6 +38,7 @@ class TodoDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTodoDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         setupView()
         setupAction()
     }
@@ -80,10 +84,22 @@ class TodoDetailActivity : AppCompatActivity() {
     }
     private fun loadTodo(todo: TodoResponse) {
         showComponent(true)
+
         binding.apply {
             tvTodoDetailTitle.text = todo.title
             tvTodoDetailDate.text = "Dibuat pada: ${todo.createdAt}"
             tvTodoDetailDesc.text = todo.description
+
+            if(todo.cover != null){
+                ivTodoDetailCover.visibility = View.VISIBLE
+                Glide.with(this@TodoDetailActivity)
+                    .load(todo.cover)
+                    .placeholder(R.drawable.ic_image_24)
+                    .into(ivTodoDetailCover)
+            }else{
+                ivTodoDetailCover.visibility = View.GONE
+            }
+
             viewModel.getLocalTodo(todo.id).observeOnce {
                 if(it != null){
                     delcomTodo = it
@@ -222,21 +238,25 @@ class TodoDetailActivity : AppCompatActivity() {
                 }
                 is MyResult.Success -> {
                     showLoading(false)
+
                     Toast.makeText(
                         this@TodoDetailActivity,
                         "Berhasil menghapus todo",
                         Toast.LENGTH_SHORT
                     ).show()
+
                     viewModel.getLocalTodo(todoId).observeOnce {
                         if(it != null){
                             viewModel.deleteLocalTodo(it)
                         }
                     }
+
                     val resultIntent = Intent()
                     resultIntent.putExtra(KEY_IS_CHANGED, true)
                     setResult(RESULT_CODE, resultIntent)
                     finishAfterTransition()
                 }
+
                 else -> {}
             }
         }

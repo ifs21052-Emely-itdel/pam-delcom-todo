@@ -3,6 +3,7 @@ package com.ifs21052.delcomtodo.presentation.todo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import okhttp3.MultipartBody
 import com.ifs21052.delcomtodo.data.local.entity.DelcomTodoEntity
 import com.ifs21052.delcomtodo.data.remote.MyResult
 import com.ifs21052.delcomtodo.data.remote.response.DataAddTodoResponse
@@ -56,6 +57,13 @@ class TodoViewModel(
     fun deleteLocalTodo(todo: DelcomTodoEntity) {
         localTodoRepository.delete(todo)
     }
+    fun addCoverTodo(
+        todoId: Int,
+        cover: MultipartBody.Part,
+    ): LiveData<MyResult<DelcomResponse>> {
+        return todoRepository.addCoverTodo(todoId, cover).asLiveData()
+    }
+
     companion object {
         @Volatile
         private var INSTANCE: TodoViewModel? = null
